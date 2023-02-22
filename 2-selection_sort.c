@@ -1,92 +1,66 @@
 #include "sort.h"
 
 /**
- * use_counting_sort - implementing counting sort algorithm
- * @array: Array to sort
- * @sorted_array: Copy of the originla array
- * @counter_array: Array used to storethe Histogram density distibution
- * @size: Size of the array
- * Return: Nothing
+ * getMinPosition - To get the index of the n number shorter
+ * than the analyzed array value
+ * @i: Actual index of an array
+ * @actual: value contained in the gived index
+ * @array: Array to analyze into
+ * @size: size of the array
+ * Return: Index that reprsents the coincidence
  */
-void use_counting_sort(int *array, int *sorted_array,
-					   int *counter_array, size_t size)
+int getMinPosition(int i, int actual, int *array, size_t size)
 {
-	int i;
+	int j = i, min_value = 0, index_related = 0;
 
-	for (i = 0; i < (int)size; i++)
+	min_value = actual;
+	while (j < (int)size)
 	{
-		sorted_array[counter_array[array[i]] - 1] = array[i];
-		counter_array[array[i]] -= 1;
+		if (array[j] < min_value)
+		{
+			min_value = array[j];
+			index_related = j;
+		}
+		j++;
 	}
-	for (i = 0; i < (int)size; i++)
-		array[i] = sorted_array[i];
+	return (index_related);
 }
 
 /**
- *create_counter_array - Creates an array that contain as indexes
- * the values of another array
- * @max_value: Size of the array
- * @sorted_array: An array to free in case that memory can't be separate
- * Return: Nothing
- */
-int *create_counter_array(int max_value, int *sorted_array)
-{
-	int *array = NULL, i;
-
-	array = malloc(sizeof(int) * (max_value + 1));
-	if (array == NULL)
-	{
-		free(sorted_array);
-		return (NULL);
-	}
-	for (i = 0; i < max_value + 1; i++)
-		array[i] = 0;
-	return (array);
-}
-
-/**
- * get_max_value - Get the max value of a gived array
- * @array: Array needed to get the max value
+ * makeSwap - swap the values of two gived elements of an array
+ * @left_index: First index
+ * @right_index: Second index
+ * @array: array to interact into
  * @size: Size of the array
- * @max_value: Max value to get/set
  * Return: Nothing
  */
-void get_max_value(int *array, size_t size, int *max_value)
+void makeSwap(int left_index, int right_index, int *array, size_t size)
 {
-	int i;
+	int tmp = 0;
 
-	for (i = 0, *max_value = *array; i < (int)size; i++)
-		if (array[i] > *max_value)
-			*max_value = array[i];
+	tmp = array[left_index];
+	array[left_index] = array[right_index];
+	array[right_index] = tmp;
+	print_array(array, size);
 }
 
 /**
- * counting_sort - sorts an array of integers in ascending order
- * using the Counting sort algorithm
+ * selection_sort - sorts an array of integers in ascending order using the
+ *  Selection sort algorithm
  * @array: Array to sort
- * @size: Size of the array
+ * @size: size of the array
+ * Return: Nothing
  */
-void counting_sort(int *array, size_t size)
+void selection_sort(int *array, size_t size)
 {
-	int *counter_array = NULL, max_value = 0, *sorted_array = NULL, i;
+	int i = 0, min_position;
 
 	if (array == NULL || size < 2)
 		return;
-	sorted_array = malloc(sizeof(int) * size);
-	if (sorted_array == NULL)
-		return;
-	get_max_value(array, size, &max_value);
-	counter_array = create_counter_array(max_value, sorted_array);
-	if (!counter_array)
-		return;
 	for (i = 0; i < (int)size; i++)
-		counter_array[array[i]] += 1;
-	for (i = 1; i < max_value + 1; i++)
-		counter_array[i] += counter_array[i - 1];
-	print_array(counter_array, max_value + 1);
-
-	use_counting_sort(array, sorted_array, counter_array, size);
-	free(sorted_array);
-	free(counter_array);
+	{
+		min_position = getMinPosition(i, array[i], array, size);
+		if (min_position != 0)
+			makeSwap(i, min_position, array, size);
+	}
 }
-
