@@ -1,16 +1,15 @@
 #include "sort.h"
-
 /**
- * shell_sort - sorts the integers in ascending order
- *@array : the array to be sorted
- *@size : the size of the array
- *
- * Return: the sorted array
+ * shell_sort - sorts an array of integers in ascending order using
+ * the Shell sort algorithm, using the Knuth sequence
+ * @array: Array to sort to
+ * @size: Size of the array
+ * Return: Nothing
  */
-
 void shell_sort(int *array, size_t size)
 {
-	size_t interval = 1, index, checker, actual value;
+	size_t interval = 1, index, checker, actual_value;
+	/* Getting the started interval*/
 
 	if (array == NULL || size < 2)
 		return;
@@ -24,14 +23,14 @@ void shell_sort(int *array, size_t size)
 			actual_value = array[index];
 			checker = index;
 			while (checker >= interval &&
-					array[checker - interval] >= (int)actual value)
+				   array[checker - interval] >= (int)actual_value)
 			{
 				array[checker] = array[checker - interval];
 				checker -= interval;
 			}
 			array[checker] = actual_value;
 		}
-		interval = (interval - 1) / 3;
+		interval = (interval - 1) / 3; /* Reducing interval */
 		print_array(array, size);
 	}
 }
