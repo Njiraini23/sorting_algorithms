@@ -75,10 +75,3 @@ void bitonic_sort(int *array, size_t size)
 		return;
 	implement_bitonic_sequency(array, size, size, 'r');
 }
-Footer
-© 2023 GitHub, Inc.
-Footer navigation
-Terms
-Privacy
-Security
-
